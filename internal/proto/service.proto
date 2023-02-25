@@ -4,8 +4,7 @@ package pb;
 
 option go_package = "github.com/Banana-Boat/gRPC-template/pb";
 
-import "rpc_login.proto";
-import "rpc_register.proto";
+import "rpc_user.proto";
 
 service GPRCTemplate {
   rpc Login (LoginRequest) returns (LoginResponse) {}
