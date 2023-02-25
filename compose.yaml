@@ -1,0 +1,22 @@
+name: test
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345
+      - MYSQL_DATABASE=test
+  server:
+    image: test-server:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - GIN_MODE=release
+      - MIGRATE_DB_URL=mysql://root:12345@tcp(mysql:3306)/test
+      # 重写 DB_SOURCE 变量，compose创建network，使两个容器之间可以通过容器名作为ip通信
+      - DB_SOURCE=root:12345@tcp(mysql:3306)/test?parseTime=true
+    # 通过wait-for.sh脚本，使server在mysql成功运行后再开始运行
+    depends_on:
+      - mysql
+    # 其中mysql作为ip
+    entrypoint: ["/app/wait-for.sh", "mysql:3306", "--", "/app/start.sh"]
+    command: ["/app/main"]
