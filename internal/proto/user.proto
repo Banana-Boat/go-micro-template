@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/Banana-Boat/gRPC-template/pb";
+
+import "google/protobuf/timestamp.proto";
+
+message User {
+  // 赋值的数字用于唯一标识该字段，范围[1, 2^29-1]
+  int32 id = 1;
+  string username = 2;
+  string gender = 3;
+  int32 age = 4;
+  google.protobuf.Timestamp createdAt = 5;
+  google.protobuf.Timestamp updatedAt = 6;
+}

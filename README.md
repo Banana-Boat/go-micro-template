@@ -1,14 +1,16 @@
-# gin-template
+# gRPC-template
 
 ## 相关 CLI 工具
 
 - [**Docker**](https://hub.docker.com/)
 - [**golang-migrate**](https://github.com/golang-migrate/migrate)
 - [**sqlc**](https://docs.sqlc.dev/en/stable/index.html)
+- [**Protocol Buffers**](https://protobuf.dev)
+- [**Evans**](https://github.com/ktr0731/evans)
 
 ## Go 相关依赖
 
-- [**Gin**](https://github.com/gin-gonic/gin)
+- [**gRPC**](https://grpc.io/)
 - [**Testify**](https://github.com/stretchr/testify)
 - [**Viper**](https://github.com/spf13/viper)
 - [**Paseto**](https://github.com/o1egl/paseto)
@@ -33,6 +35,11 @@
 
 - 在 internal/db/query/ 下创建 表名.sql 文件，根据官网编写 sql 语句
 - 执行`make sqlc`生成.go 文件
+
+#### protoc
+
+- 修改 internal/proto 目录下的文件名以及文件内容
+- 执行 `make proto`
 
 #### 编译运行
 

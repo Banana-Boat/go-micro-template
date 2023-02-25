@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Banana-Boat/gin-template/internal/util"
+	"github.com/Banana-Boat/gRPC-template/internal/util"
 	_ "github.com/go-sql-driver/mysql"
 )
 
