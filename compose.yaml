@@ -5,8 +5,8 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=12345
       - MYSQL_DATABASE=test
-  server:
-    image: test-server:latest
+  main-service:
+    image: main-service:latest
     ports:
       - "8080:8080"
     environment:
