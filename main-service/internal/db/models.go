@@ -56,6 +56,7 @@ type User struct {
 	ID        int32       `json:"id"`
 	Username  string      `json:"username"`
 	Password  string      `json:"password"`
+	Email     string      `json:"email"`
 	Gender    UsersGender `json:"gender"`
 	Age       int32       `json:"age"`
 	CreatedAt time.Time   `json:"createdAt"`

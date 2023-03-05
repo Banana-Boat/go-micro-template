@@ -12,6 +12,12 @@ migrate_up:
 sqlc:
 	sqlc generate
 
+proto:
+	rm -rf ./internal/pb/*.go
+	protoc --proto_path=./internal/proto --go_out=./internal/pb --go_opt=paths=source_relative \
+	--go-grpc_out=./internal/pb --go-grpc_opt=paths=source_relative \
+	./internal/proto/*.proto
+
 test:
 	go test -v -cover -short ./...
 
@@ -21,4 +27,4 @@ server:
 docker_build:
 	docker build -t main-service:latest .
 
-.PHONY: mysql migrate_init migrate_up sqlc test server docker_build
+.PHONY: mysql migrate_init migrate_up sqlc proto test server docker_build
