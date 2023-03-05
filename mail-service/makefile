@@ -7,6 +7,9 @@ proto:
 evans:
 	evans --host localhost --port 8081 -r repl
 
+redis:
+	docker run --name redis -p 6379:6379 -d redis:7-alpine
+
 test:
 	go test -v -cover -short ./...
 
@@ -16,4 +19,4 @@ server:
 docker_build:
 	docker build -t mail-service:latest .
 
-.PHONY: proto evans test server docker_build
+.PHONY: proto evans redis test server docker_build

@@ -5,7 +5,8 @@ import (
 )
 
 type Config struct {
-	MailServerAddress string `mapstructure:"MAIL_SERVER_ADDRESS"`
+	MailServerAddress  string `mapstructure:"MAIL_SERVER_ADDRESS"`
+	RedisServerAddress string `mapstructure:"REDIS_SERVER_ADDRESS"`
 }
 
 func LoadConfig(path string) (config Config, err error) {
