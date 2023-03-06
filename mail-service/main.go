@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net"
 
 	"github.com/Banana-Boat/gRPC-template/mail-service/internal/api"
@@ -18,11 +19,12 @@ func main() {
 	config, err := util.LoadConfig(".")
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot load config: ")
+		return
 	}
 
 	/* 创建 Redis 的 Distributor & Processor */
 	redisOPt := asynq.RedisClientOpt{
-		Addr: config.RedisServerAddress,
+		Addr: fmt.Sprintf("%s:%s", config.RedisHost, config.RedisPort),
 	}
 	taskDistributor := worker.NewTaskDistributor(redisOPt)
 	go runTaskProcessor(redisOPt) // 创建 go routine
@@ -31,31 +33,36 @@ func main() {
 	runGRPCServer(config, taskDistributor)
 }
 
-func runGRPCServer(config util.Config, taskDistributor *worker.TaskDistributor) {
+func runGRPCServer(config util.Config, taskDistributor *worker.TaskDistributor) error {
 	server, err := api.NewServer(config, taskDistributor)
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot create server: ")
+		return err
 	}
 
 	grpcServer := grpc.NewServer()
 	pb.RegisterMailServiceServer(grpcServer, server)
 	reflection.Register(grpcServer) // 使得grpc客户端能够了解哪些rpc调用被服务端支持，以及如何调用
 
-	listener, err := net.Listen("tcp", config.MailServerAddress)
+	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%s", config.MailServerHost, config.MailServerPort))
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot create listener")
+		return err
 	}
 
-	log.Info().Msgf("start gRPC server at %s", listener.Addr().String())
+	log.Info().Msgf("gRPC server started at %s:%s successfully", config.MailServerHost, config.MailServerPort)
 	err = grpcServer.Serve(listener)
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot start gRPC server")
+		return err
 	}
+
+	return nil
 }
 
 func runTaskProcessor(redisOpt asynq.RedisClientOpt) {
 	taskProcessor := worker.NewTaskProcessor(redisOpt)
-	log.Info().Msg("start task processor")
+	log.Info().Msg("task processor started successfully")
 
 	err := taskProcessor.Start()
 	if err != nil {

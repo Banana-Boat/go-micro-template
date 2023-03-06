@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 	"os"
 	"testing"
 
@@ -19,7 +20,10 @@ func TestMain(m *testing.M) {
 		log.Fatal().Err(err).Msg("cannot load config: ")
 	}
 
-	conn, err := sql.Open(config.DBDriver, config.DBSource)
+	conn, err := sql.Open(
+		config.DBDriver,
+		fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", config.DBUsername, config.DBPassword, config.DBHost, config.DBPort, config.DBName),
+	)
 	if err != nil {
 		log.Fatal().Err(err).Msg("can't connect to db: ")
 	}

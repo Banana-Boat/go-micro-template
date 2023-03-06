@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -156,7 +157,10 @@ func (server *Server) login(ctx *gin.Context) {
 	}
 
 	/* 通过gRPC调用mail-service发送登录邮件 */
-	err = sendMailViaGRPC(server.config.MailServerAddress, user.Email)
+	err = sendMailViaGRPC(
+		fmt.Sprintf("%s:%s", server.config.MailServiceHost, server.config.MailServicePort),
+		user.Email,
+	)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, wrapResponse(false, err.Error(), nil))
 		return

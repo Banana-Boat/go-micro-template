@@ -1,13 +1,12 @@
-MIGRATE_DB_URL=mysql://root:12345@tcp(localhost:3306)/test
-
 mysql:
-	docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=12345 -e MYSQL_DATABASE=test -d mysql:8.0
-	
+ifeq (${DB_PASSWORD}${DB_NAME},)
+	@echo "missing parameter DB_PASSWORD and DB_NAME"
+else
+	docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=${DB_PASSWORD} -e MYSQL_DATABASE=${DB_NAME} -d mysql:8.0
+endif
+
 migrate_init:
 	rm -rf ./internal/db/migration/** && migrate create -ext sql -dir ./internal/db/migration -seq init_schema
-
-migrate_up:
-	migrate -path ./internal/db/migration -database "${MIGRATE_DB_URL}" -verbose up
 
 sqlc:
 	sqlc generate
@@ -27,4 +26,4 @@ server:
 docker_build:
 	docker build -t main-service:latest .
 
-.PHONY: mysql migrate_init migrate_up sqlc proto test server docker_build
+.PHONY: mysql migrate_init sqlc proto test server docker_build

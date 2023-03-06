@@ -13,7 +13,8 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - REDIS_SERVER_ADDRESS=redis:6379
+      # 重写 REDIS_HOST 变量
+      - REDIS_HOST=redis
 
   mysql:
     image: mysql:8.0
@@ -32,12 +33,17 @@ services:
       - "8080:8080"
     environment:
       - GIN_MODE=release
-      - MIGRATE_DB_URL=mysql://root:12345@tcp(mysql:3306)/test
-      # 重写 DB_SOURCE 变量，compose创建network，使两个容器之间可以通过容器名作为ip通信
-      - DB_SOURCE=root:12345@tcp(mysql:3306)/test?parseTime=true
-      # 重写 MAIL_SERVER_ADDRESS 变量
-      - MAIL_SERVICE_ADDRESS=mail-service:8081
+      # 重写 MIGRATION_FILE_URL 变量
+      - MIGRATION_FILE_URL=file://migration
+      # 重写 DB_HOST 变量，compose创建network，使两个容器之间可以通过容器名作为ip通信
+      - DB_HOST=mysql
+      # 重写 MAIL_SERVICE_HOST 变量
+      - MAIL_SERVICE_HOST=mail-service
+
+    # 同时使用CMD和ENTRYPOINT，会将cmd作为entrypoint的默认参数进行执行，
+    # 即 ENTRYPOINT [ "/app/wait-for.sh", "mysql:3306", "--", "/app/main" ]
+    # 容器具有指定可执行文件，同时需要能方便地修改默认参数，可选择此中方式
+
     # 通过wait-for.sh脚本，使server在mysql成功运行后再开始运行
-    # 其中mysql作为ip
-    entrypoint: ["/app/wait-for.sh", "mysql:3306", "--", "/app/start.sh"]
+    entrypoint: ["/app/wait-for.sh", "mysql:3306", "--"]
     command: ["/app/main"]

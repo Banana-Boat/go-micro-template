@@ -11,7 +11,6 @@ FROM alpine:3.16
 WORKDIR /app
 COPY --from=builder /app/main .
 COPY ./app.env .
-COPY ./wait-for.sh .
 
 EXPOSE 8081
 
