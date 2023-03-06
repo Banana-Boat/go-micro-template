@@ -3,14 +3,10 @@ module github.com/Banana-Boat/gRPC-template/mail-service
 go 1.19
 
 require (
+	github.com/hibiken/asynq v0.24.0
 	github.com/spf13/viper v1.15.0
 	google.golang.org/grpc v1.53.0
 	google.golang.org/protobuf v1.28.1
-)
-
-require (
-	github.com/mattn/go-colorable v0.1.12 // indirect
-	github.com/mattn/go-isatty v0.0.14 // indirect
 )
 
 require (
@@ -21,8 +17,9 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
-	github.com/hibiken/asynq v0.24.0
 	github.com/magiconair/properties v1.8.7 // indirect
+	github.com/mattn/go-colorable v0.1.12 // indirect
+	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
