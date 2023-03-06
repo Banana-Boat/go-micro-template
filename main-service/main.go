@@ -20,7 +20,7 @@ func main() {
 	/* 加载配置 */
 	config, err := util.LoadConfig(".")
 	if err != nil {
-		log.Fatal().Err(err).Msg("cannot load config: ")
+		log.Fatal().Err(err).Msg("cannot load config")
 		return
 	}
 	log.Info().Msg("configuration loaded successfully")
