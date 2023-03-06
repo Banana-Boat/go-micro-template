@@ -34,4 +34,6 @@ jobs:
           go-version: 1.19
 
       - name: Test
+        env:
+          MIGRATION_FILE_URL: file://migration
         run: make -C ./main-service test
