@@ -21,7 +21,7 @@
 - [**Paseto**](https://github.com/o1egl/paseto)（用户鉴权）
 - [**Zerolog**](https://github.com/rs/zerolog)（日志输出）
 
-## 项目修改
+## 项目信息修改
 
 - 修改 go.mod 中 module 名（全局替换）
 - 向 .gitignore 文件中添加 app.env 与 compose.yaml
@@ -42,7 +42,6 @@
   - 执行`make mysql DB_PASSWORD=? DB_NAME=?`，启动 mysql 容器
 
 - Redis
-
   - 执行`make redis`，启动 mysql 容器
 
 #### sqlc
@@ -61,26 +60,27 @@
 
 ## 部署场景
 
-- 修改 compose.yaml 与根目录下的 makefile 相关信息
-- 将项目文件直接上传至服务器后，在服务器端打包镜像`make build_images`
+- 修改根目录下 compose.yaml 与 makefile 相关信息
+- 应用容器化
+  - 方法一：在服务器端拉取代码，执行`make build_images`，打包镜像
+  - 方法二：本地执行`make build_push_multi`，打包多平台镜像并推至 hub
 
 #### Swarm 方式部署（支持多节点集群）
 
 > 参考 [**docker swarm**](https://docs.docker.com/engine/reference/commandline/swarm/)、[**docker service**](https://docs.docker.com/engine/reference/commandline/service/)、[**docker stack**](https://docs.docker.com/engine/reference/commandline/stack/)
 
-- 执行`docker swarm init`，创建集群
-- 执行`docker stack deploy -c compose.yaml ???`（??? 为项目名），部署 stack
-- 执行`docker service ls`，查看 service 列表
-- 执行`docker service logs SERVICE`，查看某个 service 的日志
+- `docker swarm init` 创建集群
+- `docker stack deploy -c compose.yaml ???`（??? 为项目名）部署 stack
+- `docker service ls` 查看 service 列表
+- `docker service logs SERVICE` 查看某个 service 的日志
 
-- 执行`docker stack rm ???`，结束 stack
-- 执行`docker swarm leave`，离开集群
+- `docker stack rm ???` 结束 stack
+- `docker swarm leave` 离开集群
 
 #### Compose 方式部署（仅支持单节点）
 
 > 参考 [**docker compose**](https://docs.docker.com/engine/reference/commandline/compose/)
 
-- 执行`docker compose up -d`，后台运行
-- 执行`docker compose logs`，查看日志
-
-- 执行`docker compose down`，结束运行并删除容器
+- `docker compose up -d` 后台运行
+- `docker compose logs` 查看日志
+- `docker compose down` 结束运行并删除容器
