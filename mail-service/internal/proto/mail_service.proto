@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package pb;
 
-option go_package = "github.com/Banana-Boat/gRPC-template/internal/pb";
+option go_package = "github.com/Banana-Boat/go-micro-template/internal/pb";
 
 import "google/protobuf/timestamp.proto";
 

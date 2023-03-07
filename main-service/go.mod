@@ -1,4 +1,4 @@
-module github.com/Banana-Boat/gRPC-template/main-service
+module github.com/Banana-Boat/go-micro-template/main-service
 
 go 1.19
 

@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Banana-Boat/gRPC-template/main-service/internal/util"
+	"github.com/Banana-Boat/go-micro-template/main-service/internal/util"
 	"github.com/gin-gonic/gin"
 )
 

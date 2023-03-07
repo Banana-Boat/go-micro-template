@@ -1,4 +1,4 @@
-# gRPC-template
+# go-micro-template
 
 基于 Go 的微服务架构后端模版。主服务使用 Gin 向外提供 API，各服务间通过 gRPC 进行通信。预置 Mysql 与 Redis 用作数据存储。
 
