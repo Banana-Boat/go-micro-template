@@ -16,7 +16,4 @@ test:
 server:
 	go run main.go
 
-docker_build:
-	docker build -t mail-service:latest .
-
-.PHONY: proto evans redis test server docker_build
+.PHONY: proto evans redis test server

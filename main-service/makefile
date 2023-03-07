@@ -21,9 +21,6 @@ test:
 	go test -v -cover -short ./...
 
 server:
-	go run main.go
+	go run main.go_opt
 
-docker_build:
-	docker build -t main-service:latest .
-
-.PHONY: mysql migrate_init sqlc proto test server docker_build
+.PHONY: mysql migrate_init sqlc proto test server

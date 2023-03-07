@@ -1,13 +1,32 @@
+version: "3"
+
 services:
   redis:
     image: redis:7-alpine
+    deploy:
+      mode: global
     ports:
       - "6379:6379"
+    volumes:
+      - ./db-data/redis:/data
+
+  mysql:
+    image: mysql:8.0
+    deploy:
+      mode: global
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345
+      - MYSQL_DATABASE=test
+    volumes:
+      - ./db-data/mysql:/var/lib/mysql
 
   mail-service:
-    build:
-      context: ./mail-service
-      dockerfile: Dockerfile
+    image: tiangexiang/mail-service:0.1.0
+    deploy:
+      mode: replicated
+      replicas: 1
     depends_on:
       - redis
     ports:
@@ -16,16 +35,11 @@ services:
       # 重写 REDIS_HOST 变量
       - REDIS_HOST=redis
 
-  mysql:
-    image: mysql:8.0
-    environment:
-      - MYSQL_ROOT_PASSWORD=12345
-      - MYSQL_DATABASE=test
-
   main-service:
-    build:
-      context: ./main-service
-      dockerfile: Dockerfile
+    image: tiangexiang/main-service:0.1.0
+    deploy:
+      mode: replicated
+      replicas: 1
     depends_on:
       - mail-service
       - mysql
@@ -44,6 +58,6 @@ services:
     # 即 ENTRYPOINT [ "/app/wait-for.sh", "mysql:3306", "--", "/app/main" ]
     # 容器具有指定可执行文件，同时需要能方便地修改默认参数，可选择此中方式
 
-    # 通过wait-for.sh脚本，使server在mysql成功运行后再开始运行
-    entrypoint: ["/app/wait-for.sh", "mysql:3306", "--"]
+    # 通过wait-for.sh脚本，使server在mysql成功运行后再开始运行，设置超时上限为50s
+    entrypoint: ["/app/wait-for.sh", "mysql:3306", "-t", "60", "--"]
     command: ["/app/main"]
