@@ -69,6 +69,8 @@
 
 > 参考 [**docker swarm**](https://docs.docker.com/engine/reference/commandline/swarm/)、[**docker service**](https://docs.docker.com/engine/reference/commandline/service/)、[**docker stack**](https://docs.docker.com/engine/reference/commandline/stack/)
 
+注意！！！：Swarm 模式下数据不支持通过 Volume 挂载到 Host 进行持久化存储，此处待改进
+
 - `docker swarm init` 创建集群
 - `docker stack deploy -c compose.yaml ???`（??? 为项目名）部署 stack
 - `docker service ls` 查看 service 列表
