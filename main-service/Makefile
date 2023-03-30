@@ -21,6 +21,6 @@ test:
 	go test -v -cover -short ./...
 
 server:
-	go run main.go_opt
+	go run main.go
 
 .PHONY: mysql migrate_init sqlc proto test server
